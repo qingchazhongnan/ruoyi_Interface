@@ -1,0 +1,26 @@
+# ============================================================
+# 字典类型 - 逆向用例数据
+# ============================================================
+negative_cases:
+  - title: 新增字典类型-缺少字典类型-应失败
+    action: add
+    payload:
+      dictName: dict_{ts}
+      status: "0"
+    expected_code: 500
+    expected_msg: 字典类型不能为空
+
+  - title: 新增字典类型-字典类型已存在-应失败
+    action: add
+    payload:
+      dictName: dict_{ts}
+      dictType: sys_user_sex
+      status: "0"
+    expected_code: 500
+    expected_msg: 字典类型已存在
+
+  - title: 删除不存在字典类型-应失败
+    action: delete
+    dict_id: 999999
+    expected_code: 500
+    expected_msg: Cannot invoke

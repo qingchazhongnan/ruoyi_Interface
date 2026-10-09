@@ -1,0 +1,19 @@
+# ============================================================
+# 部门管理 - 逆向用例数据
+# 注意：部门列表接口返回 data 字段（非 rows），见 api/dept_api.py
+# ============================================================
+negative_cases:
+  - title: 新增部门-缺少部门名称-应失败
+    action: add
+    payload:
+      parentId: 103
+      orderNum: 9
+      status: "0"
+    expected_code: 500
+    expected_msg: 部门名称不能为空
+
+  - title: 删除不存在部门-应失败
+    action: delete
+    dept_id: 999999
+    expected_code: 500
+    expected_msg: 操作失败

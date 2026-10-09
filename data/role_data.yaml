@@ -1,0 +1,30 @@
+# ============================================================
+# 角色管理 - 逆向用例数据（正向全链路在 test_role.py 中一条用例覆盖增改删查）
+# expected 文案以 scripts/probe_more_api.py 实测为准
+# ============================================================
+negative_cases:
+  - title: 新增角色-缺少角色名称-应失败
+    action: add
+    payload:
+      roleKey: role_key_{ts}
+      roleSort: 6
+      status: "0"
+    expected_code: 500
+    expected_msg: 角色名称不能为空
+
+  - title: 新增角色-角色名称已存在-应失败
+    action: add
+    payload:
+      roleName: 超级管理员
+      roleKey: role_key_{ts}
+      roleSort: 6
+      status: "0"
+      menuIds: [1]
+    expected_code: 500
+    expected_msg: 角色名称已存在
+
+  - title: 删除不存在角色-应失败
+    action: delete
+    role_id: 999999
+    expected_code: 500
+    expected_msg: 操作失败

@@ -1,0 +1,18 @@
+# ============================================================
+# 通知公告 - 逆向用例数据
+# ============================================================
+negative_cases:
+  - title: 新增公告-缺少公告标题-应失败
+    action: add
+    payload:
+      noticeType: "1"
+      noticeContent: notice_{ts}
+      status: "0"
+    expected_code: 500
+    expected_msg: 公告标题不能为空
+
+  - title: 删除不存在公告-应失败
+    action: delete
+    notice_id: 999999
+    expected_code: 500
+    expected_msg: 操作失败

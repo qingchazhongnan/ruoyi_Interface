@@ -1,0 +1,29 @@
+# ============================================================
+# 参数设置 - 逆向用例数据
+# 注意：configType="Y" 会被后端视为"内置参数"禁止删除，正向用例用 "N"
+# ============================================================
+negative_cases:
+  - title: 新增参数-缺少参数键名-应失败
+    action: add
+    payload:
+      configName: config_{ts}
+      configValue: "1"
+      configType: N
+    expected_code: 500
+    expected_msg: 参数键名长度不能为空
+
+  - title: 新增参数-参数键名已存在-应失败
+    action: add
+    payload:
+      configName: config_{ts}
+      configKey: sys.account.captchaEnabled
+      configValue: "1"
+      configType: N
+    expected_code: 500
+    expected_msg: 参数键名已存在
+
+  - title: 删除不存在参数-应失败
+    action: delete
+    config_id: 999999
+    expected_code: 500
+    expected_msg: Cannot invoke

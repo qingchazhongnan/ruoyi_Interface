@@ -1,0 +1,28 @@
+# ============================================================
+# 岗位管理 - 逆向用例数据
+# ============================================================
+negative_cases:
+  - title: 新增岗位-缺少岗位名称-应失败
+    action: add
+    payload:
+      postCode: post_{ts}
+      postSort: 9
+      status: "0"
+    expected_code: 500
+    expected_msg: 岗位名称不能为空
+
+  - title: 新增岗位-岗位名称已存在-应失败
+    action: add
+    payload:
+      postName: 董事长
+      postCode: post_{ts}
+      postSort: 9
+      status: "0"
+    expected_code: 500
+    expected_msg: 岗位名称已存在
+
+  - title: 删除不存在岗位-应失败
+    action: delete
+    post_id: 999999
+    expected_code: 500
+    expected_msg: 操作失败

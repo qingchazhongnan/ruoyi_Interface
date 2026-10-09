@@ -27,6 +27,12 @@ import pytest
 from api.base_api import BaseApi
 from api.login_api import LoginApi
 from api.user_api import UserApi
+from api.role_api import RoleApi
+from api.dept_api import DeptApi
+from api.post_api import PostApi
+from api.dict_api import DictApi
+from api.config_api import ConfigApi
+from api.notice_api import NoticeApi
 
 # 后端接口地址与账号（环境变量可覆盖，Jenkins 参数化对接用）
 API_BASE = os.getenv("RUOYI_API", "http://localhost:8080")
@@ -59,6 +65,72 @@ def api_token() -> str:
 def user_api(api_token: str) -> UserApi:
     """带 token 的用户管理接口对象（清理数据 / 业务用例共用）"""
     return UserApi(token=api_token)
+
+
+# 其余业务模块的 API 对象（带 token，供各自模块用例使用）
+@pytest.fixture(scope="session")
+def role_api(api_token: str) -> RoleApi:
+    return RoleApi(token=api_token)
+
+
+@pytest.fixture(scope="session")
+def dept_api(api_token: str) -> DeptApi:
+    return DeptApi(token=api_token)
+
+
+@pytest.fixture(scope="session")
+def post_api(api_token: str) -> PostApi:
+    return PostApi(token=api_token)
+
+
+@pytest.fixture(scope="session")
+def dict_api(api_token: str) -> DictApi:
+    return DictApi(token=api_token)
+
+
+@pytest.fixture(scope="session")
+def config_api(api_token: str) -> ConfigApi:
+    return ConfigApi(token=api_token)
+
+
+@pytest.fixture(scope="session")
+def notice_api(api_token: str) -> NoticeApi:
+    return NoticeApi(token=api_token)
+
+
+# ============================================================
+# 2.5 通用后置清理（多模块复用；用户模块仍用 cleanup_users）
+# ============================================================
+@pytest.fixture
+def cleanup_items():
+    """
+    通用后置清理：注册 (find_func, delete_func, key) 三元组，teardown 自动删除。
+    两种注册方式：
+      1) (find_func, delete_func, key)  -> 先按 key 查出 id，再 delete(id)
+      2) (None, delete_func, id)        -> 已持有 id，直接 delete(id)（全链路用例推荐）
+    用法：
+      def test_xxx(role_api, cleanup_items):
+          cleanup_items.append((role_api.find_role_id, role_api.delete_role, "role_1"))
+          # 或新增成功后：cleanup_items.append((None, role_api.delete_role, role_id))
+    """
+    registered: list = []
+
+    yield registered
+
+    for find_func, delete_func, key in registered:
+        try:
+            if find_func is None:
+                resp = delete_func(key)
+            else:
+                obj_id = find_func(key)
+                if obj_id is None:
+                    print(f"[cleanup] {key} 不存在，跳过")
+                    continue
+                resp = delete_func(obj_id)
+            body = BaseApi.json(resp)
+            print(f"[cleanup] 删除 {key} -> code {body.get('code')} {body.get('msg')}")
+        except Exception as e:
+            print(f"[cleanup] 删除 {key} 异常: {e}")
 
 
 # ============================================================
