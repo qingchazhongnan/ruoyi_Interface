@@ -1,1 +1,0 @@
-INFO     api.base_api:base_api.py:57 [API] GET http://localhost:8080/system/user/list -> 200 (1.00s)
