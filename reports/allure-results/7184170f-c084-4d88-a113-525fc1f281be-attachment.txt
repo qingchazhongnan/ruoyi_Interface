@@ -1,0 +1,1 @@
+[cleanup] 删除 admin(id=1) -> code 500 当前用户不能删除

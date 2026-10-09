@@ -1,0 +1,64 @@
+# 若依接口自动化测试数据（expected 文案基于若依 RuoYi-Vue 标准契约，可用 scripts/probe_api.py 校准）
+
+# ---------- 登录用例 ----------
+# {ts} 由用例运行时替换（本组不需要）
+login_cases:
+  - title: 正确账号密码-登录成功
+    username: admin
+    password: admin123
+    expected_code: 200
+    expected_msg: 操作成功
+    check_token: true
+
+  - title: 密码错误-登录失败
+    username: admin
+    password: wrong_pass_123
+    expected_code: 500
+    expected_msg: 用户不存在/密码错误
+
+  - title: 用户名为空-后端校验
+    username: ""
+    password: ""
+    expected_code: 500
+    expected_msg: 用户不存在/密码错误
+
+# ---------- 新增用户用例 ----------
+# {ts} = 时间戳，运行时替换，保证账号唯一、可重复跑
+add_user_cases:
+  - title: 正常新增用户-必填项
+    userName: api_auto_{ts}
+    nickName: 接口自动用户
+    password: Test@123456
+    deptId: 103
+    roleIds: [2]
+    postIds: []
+    phonenumber: "13800000001"
+    email: api1@test.com
+    sex: "0"
+    status: "0"
+    expected_code: 200
+    expected_msg: 操作成功
+
+  - title: 新增用户-带邮箱手机号
+    userName: api_auto_{ts}
+    nickName: 接口自动用户二号
+    password: Test@123456
+    deptId: 103
+    roleIds: [2]
+    postIds: []
+    phonenumber: "13800000002"
+    email: api2@test.com
+    sex: "1"
+    status: "0"
+    expected_code: 200
+    expected_msg: 操作成功
+
+  - title: 新增用户-用户名重复-应失败
+    userName: admin
+    nickName: 重复用户
+    password: Test@123456
+    deptId: 103
+    roleIds: [2]
+    postIds: []
+    expected_code: 500
+    expected_msg: 登录账号已存在

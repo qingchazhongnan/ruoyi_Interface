@@ -1,0 +1,1 @@
+INFO     api.base_api:base_api.py:57 [API] POST http://localhost:8080/login -> 200 (0.00s)

@@ -1,0 +1,5 @@
+INFO     api.base_api:base_api.py:57 [API] POST http://localhost:8080/system/user -> 200 (0.05s)
+INFO     api.base_api:base_api.py:57 [API] GET http://localhost:8080/system/user/list -> 200 (0.01s)
+INFO     api.base_api:base_api.py:57 [API] DELETE http://localhost:8080/system/user/130 -> 200 (0.01s)
+INFO     api.base_api:base_api.py:57 [API] GET http://localhost:8080/system/user/list -> 200 (0.01s)
+INFO     api.base_api:base_api.py:57 [API] GET http://localhost:8080/system/user/list -> 200 (0.01s)
